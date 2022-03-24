@@ -82,6 +82,8 @@ def demo(opt):
 
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
+            list_pred = []
+            dict_pred = {}
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
                 
                 
@@ -106,7 +108,11 @@ def demo(opt):
                 confidence_score = pred_max_prob.cumprod(dim=0)[-1]
                 print(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}')
                 log.write(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}\n')
-
+                dict_pred[f'{pred:25s}'] = f'{confidence_score}'
+                list_pred.append(f'{pred:25s}')
+                data['pred_words'] = list_pred
+                data['confidence_score_pred_words'] = dict_pred
+            data.to_csv('data_final.csv', sep = ',', na_rep='Unknown')
             log.close()
   
 
