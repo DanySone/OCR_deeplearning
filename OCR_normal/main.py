@@ -61,7 +61,7 @@ for num in range(len(image_list)):
   image_names.append(os.path.relpath(image_list[num], start))
 
 
-result_folder = './Results'
+result_folder = './results'
 if not os.path.isdir(result_folder):
     os.mkdir(result_folder)
 
