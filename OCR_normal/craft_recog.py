@@ -111,9 +111,8 @@ def demo(opt):
                 list_pred.append(pred)
                 data['pred_words'] = list_pred
                 data['confidence_score_pred_words'] = dict_pred
-            
-            log.close()
             data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data2.csv')
+            log.close()
     
   
 
