@@ -10,5 +10,7 @@ This OCR project contains two parts :
 
 Using these implementations we could set up a notebook to understand the model used and to apply on receipt to detect some informations and collect it on a json file.
 This repository add the generation of json file and contains 60 images of receipt to test the models.
+
 Link to the receipt dataset : https://expressexpense.com/blog/free-receipt-images-ocr-machine-learning-dataset/ 
+
 Link to the notebook : https://colab.research.google.com/drive/1SJON32n3m9HC-ENoKNBP0DAKkbwBOfXb?usp=sharing
