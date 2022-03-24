@@ -18,10 +18,8 @@ def demo(opt):
 
 
     """Open csv file wherein you are going to write the Predicted Words"""
-    data = pd.read_csv('my_data.csv')
-    data['pred_words'] = '1'
-    data.to_csv('my_data2.csv')
-    print(data.head())
+    data = pd.read_csv('/content/Pipeline/data.csv')
+
     """ model configuration """
     if 'CTC' in opt.Prediction:
         converter = CTCLabelConverter(opt.character)
@@ -84,11 +82,10 @@ def demo(opt):
 
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
-            list_pred = []
-            dict_pred = {}
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
                 
-                start = 'crop_words/'
+                
+                start = PATH TO CROPPED WORDS
                 path = os.path.relpath(img_name, start)
 
                 folder = os.path.dirname(path)
@@ -109,13 +106,8 @@ def demo(opt):
                 confidence_score = pred_max_prob.cumprod(dim=0)[-1]
                 print(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}')
                 log.write(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}\n')
-                dict_pred[pred] = confidence_score
-                list_pred.append(pred)
-                data['pred_words'] = list_pred
-                data['confidence_score_pred_words'] = dict_pred
-            data.to_csv('my_data2.csv')
+
             log.close()
-    
   
 
 if __name__ == '__main__':
