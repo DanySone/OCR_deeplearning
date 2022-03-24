@@ -113,7 +113,8 @@ def demo(opt):
                 data['confidence_score_pred_words'] = dict_pred
             
             log.close()
-    data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv', sep = ',', na_rep='Unknown')
+            data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data2.csv')
+    
   
 
 if __name__ == '__main__':
