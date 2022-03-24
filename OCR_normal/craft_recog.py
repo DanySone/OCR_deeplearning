@@ -84,8 +84,10 @@ def demo(opt):
             preds_max_prob, _ = preds_prob.max(dim=2)
             list_pred = []
             dict_pred = {}
+            print("-------------------------------------")
+            print(preds_str)
+            print("-------------------------------------")
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
-                
                 
                 start = 'crop_words/'
                 path = os.path.relpath(img_name, start)
@@ -112,6 +114,7 @@ def demo(opt):
                 list_pred.append(f'{pred:25s}')
                 data['pred_words'] = list_pred
                 data['confidence_score_pred_words'] = dict_pred
+            
             log.close()
     data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv', sep = ',', na_rep='Unknown')
   
