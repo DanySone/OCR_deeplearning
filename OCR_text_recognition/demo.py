@@ -79,12 +79,12 @@ def demo(opt):
             head = f'{"image_path":25s}\t {"predicted_labels":25s}\t confidence score'
             
             print(f'{dashed_line}\n{head}\n{dashed_line}')
-            log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
+            #log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
 
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
-                start = '../OCR_deeplearning/OCR_text_detection/crop_words/'
+                start = '../OCR_text_detection/crop_words/'
                 path = os.path.relpath(img_name, start)
 
                 folder = os.path.dirname(path)
@@ -115,7 +115,7 @@ def demo(opt):
                     if processed_img[-2] != file_name:
                       data.loc[data["image_name"] == file_name, "pred_words"] = str(list_words).strip('[]')
             data.to_csv('/content/OCR_deeplearning/OCR_text_detection/my_data2.csv', sep=',')
-            data[['image_name', 'pred_words']].to_json("/content/OCR_deeplearning/OCR_text_recognition/prediction.json", orient='records', indent = 2)
+            data[['image_name', 'pred_words']].to_json("/content/OCR_deeplearning/OCR_text_detection/prediction.json", orient='records', indent = 2)
             log.close()
   
 
