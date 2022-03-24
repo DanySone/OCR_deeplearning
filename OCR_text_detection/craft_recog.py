@@ -18,7 +18,7 @@ def demo(opt):
 
 
     """Open csv file wherein you are going to write the Predicted Words"""
-    data = pd.read_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv')
+    data = pd.read_csv('/content/OCR_deeplearning/OCR_text_detection/my_data.csv')
     data['image_name'] = data['image_name'].map(lambda x: x.split('.')[0])
     """ model configuration """
     if 'CTC' in opt.Prediction:
@@ -84,7 +84,7 @@ def demo(opt):
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
-                start = '../OCR_deeplearning/OCR_normal/crop_words/'
+                start = '../OCR_deeplearning/OCR_text_detection/crop_words/'
                 path = os.path.relpath(img_name, start)
 
                 folder = os.path.dirname(path)
@@ -114,8 +114,8 @@ def demo(opt):
                   if len(processed_img) > 1:
                     if processed_img[-2] != file_name:
                       data.loc[data["image_name"] == file_name, "pred_words"] = str(list_words).strip('[]')
-            data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data2.csv', sep=',')
-            data[['image_name', 'pred_words']].to_json("/content/OCR_deeplearning/OCR_normal/prediction.json", orient='records', indent = 2)
+            data.to_csv('/content/OCR_deeplearning/OCR_text_detection/my_data2.csv', sep=',')
+            data[['image_name', 'pred_words']].to_json("/content/OCR_deeplearning/OCR_text_detection/prediction.json", orient='records', indent = 2)
             log.close()
   
 
