@@ -18,7 +18,7 @@ def demo(opt):
 
 
     """Open csv file wherein you are going to write the Predicted Words"""
-    data = pd.read_csv('/content/Pipeline/data.csv')
+    data = pd.read_csv('my_data.csv')
 
     """ model configuration """
     if 'CTC' in opt.Prediction:
@@ -85,7 +85,7 @@ def demo(opt):
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
                 
                 
-                start = PATH TO CROPPED WORDS
+                start = 'crop_words/'
                 path = os.path.relpath(img_name, start)
 
                 folder = os.path.dirname(path)
