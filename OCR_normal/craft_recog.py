@@ -112,8 +112,8 @@ def demo(opt):
                 list_pred.append(f'{pred:25s}')
                 data['pred_words'] = list_pred
                 data['confidence_score_pred_words'] = dict_pred
-            data.to_csv('data_final.csv', sep = ',', na_rep='Unknown')
             log.close()
+    data.to_csv('data_final.csv', sep = ',', na_rep='Unknown')
   
 
 if __name__ == '__main__':
