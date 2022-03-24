@@ -14,3 +14,5 @@ This repository add the generation of json file and contains 60 images of receip
 Link to the receipt dataset : https://expressexpense.com/blog/free-receipt-images-ocr-machine-learning-dataset/ 
 
 Link to the notebook : https://colab.research.google.com/drive/1SJON32n3m9HC-ENoKNBP0DAKkbwBOfXb?usp=sharing
+
+The json file is generated in the following path : OCR_text_detection/prediction.json
