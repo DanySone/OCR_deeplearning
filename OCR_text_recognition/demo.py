@@ -78,8 +78,8 @@ def demo(opt):
             dashed_line = '-' * 80
             head = f'{"image_path":25s}\t {"predicted_labels":25s}\t confidence score'
             
-            #print(f'{dashed_line}\n{head}\n{dashed_line}')
-            # log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
+            print(f'{dashed_line}\n{head}\n{dashed_line}')
+            log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
 
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
@@ -103,8 +103,8 @@ def demo(opt):
                 # calculate confidence score (= multiply of pred_max_prob)
                 confidence_score = pred_max_prob.cumprod(dim=0)[-1]
                 #print(processed_img)
-                #print(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}')
-                #log.write(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}\n')
+                print(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}')
+                log.write(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}\n')
                 if file_name not in processed_img:
                   processed_img.append(file_name)
                   list_words = []
