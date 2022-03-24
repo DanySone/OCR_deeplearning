@@ -126,5 +126,5 @@ if __name__ == '__main__':
 
         file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
 
-    data.to_csv('my_data.csv', sep = ',', na_rep='Unknown')
+    data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv', sep = ',', na_rep='Unknown')
     print("elapsed time : {}s".format(time.time() - t))

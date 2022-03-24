@@ -18,7 +18,7 @@ def demo(opt):
 
 
     """Open csv file wherein you are going to write the Predicted Words"""
-    data = pd.read_csv('../OCR_deeplearning/OCR_normal/my_data.csv')
+    data = pd.read_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv')
 
     """ model configuration """
     if 'CTC' in opt.Prediction:
@@ -113,7 +113,7 @@ def demo(opt):
                 data['pred_words'] = list_pred
                 data['confidence_score_pred_words'] = dict_pred
             log.close()
-    data.to_csv('../OCR_deeplearning/OCR_normal/data_final.csv', sep = ',', na_rep='Unknown')
+    data.to_csv('/content/OCR_deeplearning/OCR_normal/data_final.csv', sep = ',', na_rep='Unknown')
   
 
 if __name__ == '__main__':
