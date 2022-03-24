@@ -11,8 +11,15 @@ from dataset import RawDataset, AlignCollate
 from model import Model
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+import pandas as pd
+import os
 
 def demo(opt):
+
+
+    """Open csv file wherein you are going to write the Predicted Words"""
+    data = pd.read_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv')
+    data['image_name'] = data['image_name'].map(lambda x: x.split('.')[0])
     """ model configuration """
     if 'CTC' in opt.Prediction:
         converter = CTCLabelConverter(opt.character)
@@ -43,6 +50,7 @@ def demo(opt):
 
     # predict
     model.eval()
+    processed_img = []
     with torch.no_grad():
         for image_tensors, image_path_list in demo_loader:
             batch_size = image_tensors.size(0)
@@ -58,7 +66,7 @@ def demo(opt):
                 preds_size = torch.IntTensor([preds.size(1)] * batch_size)
                 _, preds_index = preds.max(2)
                 # preds_index = preds_index.view(-1)
-                preds_str = converter.decode(preds_index, preds_size)
+                preds_str = converter.decode(preds_index.data, preds_size.data)
 
             else:
                 preds = model(image, text_for_pred, is_train=False)
@@ -67,17 +75,26 @@ def demo(opt):
                 _, preds_index = preds.max(2)
                 preds_str = converter.decode(preds_index, length_for_pred)
 
-
-            log = open(f'./log_demo_result.txt', 'a')
             dashed_line = '-' * 80
-            head = f'{"image_path":25s}\t{"predicted_labels":25s}\tconfidence score'
+            head = f'{"image_path":25s}\t {"predicted_labels":25s}\t confidence score'
             
-            print(f'{dashed_line}\n{head}\n{dashed_line}')
-            log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
+            #print(f'{dashed_line}\n{head}\n{dashed_line}')
+            # log.write(f'{dashed_line}\n{head}\n{dashed_line}\n')
 
             preds_prob = F.softmax(preds, dim=2)
             preds_max_prob, _ = preds_prob.max(dim=2)
             for img_name, pred, pred_max_prob in zip(image_path_list, preds_str, preds_max_prob):
+                start = '../OCR_deeplearning/OCR_normal/crop_words/'
+                path = os.path.relpath(img_name, start)
+
+                folder = os.path.dirname(path)
+
+                image_name=os.path.basename(path)
+
+                file_name='_'.join(image_name.split('_')[:-8])
+                txt_file=os.path.join(start, folder, file_name)                
+                
+                log = open(f'{txt_file}_log_demo_result_vgg.txt', 'a')
                 if 'Attn' in opt.Prediction:
                     pred_EOS = pred.find('[s]')
                     pred = pred[:pred_EOS]  # prune after "end of sentence" token ([s])
@@ -85,11 +102,22 @@ def demo(opt):
 
                 # calculate confidence score (= multiply of pred_max_prob)
                 confidence_score = pred_max_prob.cumprod(dim=0)[-1]
-
-                print(f'{img_name:25s}\t{pred:25s}\t{confidence_score:0.4f}')
-                log.write(f'{img_name:25s}\t{pred:25s}\t{confidence_score:0.4f}\n')
-
+                #print(processed_img)
+                #print(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}')
+                #log.write(f'{image_name:25s}\t {pred:25s}\t {confidence_score:0.4f}\n')
+                if file_name not in processed_img:
+                  processed_img.append(file_name)
+                  list_words = []
+                  list_words.append(" ".join(f'{pred:25s}'.split()))
+                elif file_name in processed_img:
+                  list_words.append(" ".join(f'{pred:25s}'.split()))
+                  if len(processed_img) > 1:
+                    if processed_img[-2] != file_name:
+                      data.loc[data["image_name"] == file_name, "pred_words"] = str(list_words).strip('[]')
+            data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data2.csv', sep=',')
+            data[['image_name', 'pred_words']].to_json("/content/OCR_deeplearning/OCR_normal/prediction.json", orient='records', indent = 2)
             log.close()
+  
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -125,5 +153,7 @@ if __name__ == '__main__':
     cudnn.benchmark = True
     cudnn.deterministic = True
     opt.num_gpu = torch.cuda.device_count()
+    # print (opt.image_folder)
 
+    # pred_words=demo(opt)
     demo(opt)
