@@ -18,8 +18,8 @@ def demo(opt):
 
 
     """Open csv file wherein you are going to write the Predicted Words"""
-    data = pd.read_csv('/content/OCR_deeplearning/OCR_normal/my_data.csv')
-
+    data = pd.read_csv('my_data.csv')
+    print(data.head())
     """ model configuration """
     if 'CTC' in opt.Prediction:
         converter = CTCLabelConverter(opt.character)
@@ -111,7 +111,7 @@ def demo(opt):
                 list_pred.append(pred)
                 data['pred_words'] = list_pred
                 data['confidence_score_pred_words'] = dict_pred
-            data.to_csv('/content/OCR_deeplearning/OCR_normal/my_data2.csv')
+            data.to_csv('my_data2.csv')
             log.close()
     
   
